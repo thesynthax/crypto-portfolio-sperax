@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGem, faUser as farUser } from '@fortawesome/free-regular-svg-icons';
 import { faUser as fasUser } from '@fortawesome/free-solid-svg-icons';
@@ -16,6 +16,11 @@ const Navbar = (props: NavbarProps) => {
   const setWalletConnected = props.setWalletConnected;
   const [openDropDown, setOpenDropDown] = useState(false);
   const excludedElementRef = useRef<HTMLDivElement>(null);
+  const connectWalletButtonRef = useRef<HTMLDivElement>(null);
+
+  const { hash, pathname, search } = useLocation();
+
+  connectWalletButtonRef.current!.className = pathname == "/connect-wallet" ? "userCircle highlighted" : "userCircle";
 
   return (
     <>
@@ -23,22 +28,24 @@ const Navbar = (props: NavbarProps) => {
         <div className="appLogo">
           <FontAwesomeIcon icon={faGem} />
         </div>
-        <h1>Cryptolio</h1>
+        <h1><Link to="/" className="appName">Cryptolio</Link></h1>
         <div className="links">
           {walletConnected ? 
             <>
-              <Link to="/">Watch List</Link>
-              <Link to="/">Transaction History</Link>
-              <Link to="/">Transfer Tokens</Link>
+              <Link to="/">Portfolio</Link>
+              <Link to="/watch-list">Watch List</Link>
+              <Link to="/transaction-history">Transaction History</Link>
+              <Link to="/transfer-tokens">Transfer Tokens</Link>
             </>
             :
             <>
+              <span>Portfolio</span>
               <span>Watch List</span>
               <span>Transaction History</span>
               <span>Transfer Tokens</span>
             </>
           }
-          <span className="userCircle" onClick={() => {if(walletConnected){setOpenDropDown(open => !open)}}}>{walletConnected ? <FontAwesomeIcon icon={openDropDown ? fasUser : farUser} /> : <Link to="">Connect Wallet</Link>}</span>
+          <span ref={connectWalletButtonRef} className="userCircle" onClick={() => {if(walletConnected){setOpenDropDown(open => !open)}}}>{walletConnected ? <FontAwesomeIcon icon={openDropDown ? fasUser : farUser} /> : <Link to="/connect-wallet">Connect Wallet</Link>}</span>
         </div>
       </nav>
       {

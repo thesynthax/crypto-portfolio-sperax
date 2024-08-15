@@ -15,8 +15,8 @@ export const DropDown = (props: DropDownProps) => {
       {
         connected && 
           <div className="dropDown">
-            <Link to=""><li>Profile</li></Link>
-            <Link to="" onClick={() => setConnected(false)}><li>Logout Wallet</li></Link>
+            <Link to="/profile"><li>Profile</li></Link>
+            <Link to="/" onClick={() => setConnected(false)}><li>Logout Wallet</li></Link>
           </div>
       }
     </>

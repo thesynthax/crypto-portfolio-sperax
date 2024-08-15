@@ -3,6 +3,11 @@ import About from './components/About';
 import Home from './components/Home';
 import Navbar from './components/Navbar';
 import { useState, useEffect } from 'react';
+import { WatchList } from './components/WatchList';
+import { TransactionHistory } from './components/TransactionHistory';
+import { TransferTokens } from './components/TransferTokens';
+import { Profile } from './components/Profile';
+import { ConnectWallet } from './components/ConnectWallet';
 
 const App = () => {
 
@@ -13,15 +18,16 @@ const App = () => {
     <Router>
       <div className="App">
         <Navbar walletConnected={walletConnected} setWalletConnected={setWalletConnected}/>
-        <div className="container">
-          <Home walletConnected={walletConnected}/>
           <Routes>
-            <Route path="/" element={<></>} />
-            <Route path="/about" element={<About />}/>
+            <Route path="/" element={<Home walletConnected={walletConnected}/>} />
+            <Route path="/watch-list" element={<WatchList />} />
+            <Route path="/transaction-history" element={<TransactionHistory />} />
+            <Route path="/transfer-tokens" element={<TransferTokens />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/connect-wallet" element={<ConnectWallet />} />
             <Route path="*" />
           </Routes>
         </div>
-      </div>
     </Router>
   );
 }

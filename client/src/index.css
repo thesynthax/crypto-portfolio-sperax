@@ -34,7 +34,7 @@ a {
   display: flex;
   align-items: center;
   margin: 0 auto;
-  border-bottom: 1px #363943 solid;
+  box-shadow: 0 20px 40px -8px #111;
 }
 .navbar .appLogo {
   margin-top: 3px;
@@ -56,6 +56,11 @@ a {
   margin-left: 16px;
   padding: 8px;
   right: 200px;
+}
+
+.navbar .appName{
+  margin-left: 0px;
+  padding: 0px;
 }
 .navbar span {
   margin-left: 16px;
@@ -225,4 +230,8 @@ ul {
 .dropDown li {
   list-style-type: none;
   margin-bottom: 10px;
+}
+
+.highlighted {
+  background-color: #363943;
 }
