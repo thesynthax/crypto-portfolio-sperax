@@ -3,20 +3,23 @@ import { Link } from "react-router-dom";
 type DropDownProps = {
   connected: boolean;
   setConnected: Function;
+  setAccount: Function;
 }
 
 export const DropDown = (props: DropDownProps) => {
 
-  const connected = props.connected;
-  const setConnected = props.setConnected;
+  const disconnectWallet = () => {
+    props.setConnected(false);
+    props.setAccount(null);
+  }
 
   return (
     <>
       {
-        connected && 
+        props.connected && 
           <div className="dropDown">
             <Link to="/profile"><li>Profile</li></Link>
-            <Link to="/" onClick={() => setConnected(false)}><li>Logout Wallet</li></Link>
+            <Link to="/" onClick={disconnectWallet}><li>Logout Wallet</li></Link>
           </div>
       }
     </>

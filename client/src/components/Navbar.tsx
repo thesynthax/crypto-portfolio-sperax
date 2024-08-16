@@ -8,20 +8,19 @@ import DropDown from "./DropDown";
 type NavbarProps = {
   walletConnected: boolean;
   setWalletConnected: Function;
+  setAccount: Function;
 }
 
 const Navbar = (props: NavbarProps) => {
   
-  const walletConnected = props.walletConnected;
-  const setWalletConnected = props.setWalletConnected;
   const [openDropDown, setOpenDropDown] = useState(false);
   const excludedElementRef = useRef<HTMLDivElement>(null);
   const connectWalletButtonRef = useRef<HTMLDivElement>(null);
 
   const { hash, pathname, search } = useLocation();
 
-  if (!walletConnected)
-    connectWalletButtonRef.current!.className = pathname == "/connect-wallet" ? "userCircle highlighted" : "userCircle";
+  if (!props.walletConnected && connectWalletButtonRef.current)
+    connectWalletButtonRef.current.className = pathname === "/connect-wallet" ? "userCircle highlighted" : "userCircle";
 
   return (
     <>
@@ -31,7 +30,7 @@ const Navbar = (props: NavbarProps) => {
         </div>
         <h1><Link to="/" className="appName">Cryptolio</Link></h1>
         <div className="links">
-          {walletConnected ? 
+          {props.walletConnected ? 
             <>
               <Link to="/">Portfolio</Link>
               <Link to="/watch-list">Watch List</Link>
@@ -46,11 +45,11 @@ const Navbar = (props: NavbarProps) => {
               <span>Transfer Tokens</span>
             </>
           }
-          <span ref={connectWalletButtonRef} className="userCircle" onClick={() => {if(walletConnected){setOpenDropDown(open => !open)}}}>{walletConnected ? <FontAwesomeIcon icon={openDropDown ? fasUser : farUser} /> : <Link to="/connect-wallet">Connect Wallet</Link>}</span>
+          <span ref={connectWalletButtonRef} className="userCircle" onClick={() => {if(props.walletConnected){setOpenDropDown(open => !open)}}}>{props.walletConnected ? <FontAwesomeIcon icon={openDropDown ? fasUser : farUser} /> : <Link to="/connect-wallet">Connect Wallet</Link>}</span>
         </div>
       </nav>
       {
-        openDropDown && <DropDown connected={walletConnected} setConnected={setWalletConnected} />
+        openDropDown && <DropDown connected={props.walletConnected} setConnected={props.setWalletConnected} setAccount={props.setAccount} />
       }
     </>
   )

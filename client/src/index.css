@@ -62,6 +62,7 @@ a {
 .navbar .appName{
   margin-left: 0px;
   padding: 0px;
+  font-weight: 700;
 }
 .navbar span {
   margin-left: 16px;
@@ -110,7 +111,7 @@ body {
   margin: 40px auto;
   padding: 20px;
   font-size: 20px;
-  border: 2px solid black;
+  /*border: 2px solid black;*/
 }
 .dragndrop {
   background-color: #2b2b2b;
@@ -236,4 +237,7 @@ ul {
 
 .highlighted {
   background-color: #363943;
+}
+.coinSelectorButton {
+  margin-top: 5px;
 }

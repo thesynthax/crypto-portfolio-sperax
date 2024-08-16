@@ -1,5 +1,4 @@
 import { BrowserRouter as Router, Link, Route, Routes } from 'react-router-dom';
-import About from './components/About';
 import Home from './components/Home';
 import Navbar from './components/Navbar';
 import { useState, useEffect } from 'react';
@@ -12,13 +11,20 @@ import { NotFound } from './components/NotFound';
 
 const App = () => {
 
-  const [account, setAccount] = useState(null);
-  const [walletConnected, setWalletConnected] = useState(true);
+  const [account, setAccount] = useState<string | null>(null);
+  const [walletConnected, setWalletConnected] = useState<boolean>(false);
+
+  const HandleWalletState = (value: boolean) => {
+    setWalletConnected(value);
+  }
+  const HandleAccountState = (value: string) => {
+    setAccount(value);
+  }
 
   return (
     <Router>
       <div className="App">
-        <Navbar walletConnected={walletConnected} setWalletConnected={setWalletConnected}/>
+        <Navbar walletConnected={walletConnected} setWalletConnected={HandleWalletState} setAccount={HandleAccountState}/>
           <Routes>
             <Route path="/" element={<Home walletConnected={walletConnected}/>} />
             <Route path="/watch-list" element={<WatchList />} />
@@ -26,7 +32,7 @@ const App = () => {
             <Route path="/transfer-tokens" element={<TransferTokens />} />
             <Route path="/profile" element={<Profile />} />
             {
-              !walletConnected && <Route path="/connect-wallet" element={<ConnectWallet />} />
+              !walletConnected && <Route path="/connect-wallet" element={<ConnectWallet HandleWalletState={HandleWalletState} HandleAccountState={HandleAccountState}/>} />
             }
             <Route path="*" element={<NotFound />} />
           </Routes>
