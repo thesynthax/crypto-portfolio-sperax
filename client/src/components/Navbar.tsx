@@ -20,7 +20,8 @@ const Navbar = (props: NavbarProps) => {
 
   const { hash, pathname, search } = useLocation();
 
-  connectWalletButtonRef.current!.className = pathname == "/connect-wallet" ? "userCircle highlighted" : "userCircle";
+  if (!walletConnected)
+    connectWalletButtonRef.current!.className = pathname == "/connect-wallet" ? "userCircle highlighted" : "userCircle";
 
   return (
     <>
