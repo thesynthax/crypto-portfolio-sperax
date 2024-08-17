@@ -21,10 +21,12 @@ const App = () => {
     setAccount(value);
   }
 
+  const profilePath = `/profile/${account}`;
+
   return (
     <Router>
       <div className="App">
-        <Navbar walletConnected={walletConnected} setWalletConnected={HandleWalletState} setAccount={HandleAccountState}/>
+        <Navbar account={account} walletConnected={walletConnected} setWalletConnected={HandleWalletState} setAccount={HandleAccountState}/>
           <Routes>
             <Route path="/" element={<Home walletConnected={walletConnected}/>} />
             <Route path="/watch-list" element={<WatchList />} />
@@ -34,7 +36,7 @@ const App = () => {
               !walletConnected ?
                 <Route path="/connect-wallet" element={<ConnectWallet HandleWalletState={HandleWalletState} HandleAccountState={HandleAccountState}/>} />
                 :
-                <Route path="/profile" element={<Profile accountAddress={account}/>} />
+                <Route path={profilePath} element={<Profile accountAddress={account}/>} />
             }
             <Route path="*" element={<NotFound />} />
           </Routes>

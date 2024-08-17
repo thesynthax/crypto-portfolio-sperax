@@ -92,7 +92,7 @@ export const ConnectWallet = (props: ConnectWalletProps) => {
             </div> 
             : 
             <div>
-
+              <div className="otherwallet-line">Currently under development. Come back later!</div>
             </div>
         }
       </div>

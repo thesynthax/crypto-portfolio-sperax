@@ -80,12 +80,12 @@ app.post("/profile", async (req, res) => {
     */
 
 });
-/*
-app.get('/files/:id', async (req, res) => {
-    const fileId = req.params.id;
 
-    const qry = `SELECT * FROM users WHERE uniqueId = ?`;
-    const values = [fileId.split('.')[0]];
+app.get('/profile/:id', async (req, res) => {
+    const walletAddress = req.params.id;
+
+    const qry = `SELECT * FROM users WHERE walletAddress = ?`;
+    const values = [walletAddress];
     db.get(qry, values, async (err, row: Row | undefined) => {
         if (err) {
             console.error('Error fetching file data:', err);
@@ -93,53 +93,20 @@ app.get('/files/:id', async (req, res) => {
         }
 
         if (!row) {
-            return res.status(404).send('File not found');
+            return res.status(200).send('new');
         }
         
-        const filepath = row.filepath;
-        const filetype = row.mimetype;
-        const password = row.password;
-        if (filetype) {
-            res.setHeader('Content-Type', filetype);
-
-            if (password === "") {
-                res.sendFile(filepath, (err) => {
-                    if (err) {
-                        console.error('Error serving file:', err);
-                        return res.status(500).send(`Internal Server Error.`);
-                    }
-                    console.log('File served successfully!');
-                });
-                return;
-            }
-
-            const credentials = basicAuth(req);
-
-            if (!credentials) {
-                res.setHeader('WWW-Authenticate', 'Basic realm="Secure File Access"');
-                return res.status(401).send('Unauthorized');
-            }
-
-            const isPassCorrect = await bcrypt.compare(credentials.pass, password);
-
-            if (isPassCorrect) {
-                res.sendFile(filepath, (err) => {
-                    if (err) {
-                        console.error('Error serving file:', err);
-                        return res.status(500).send(`Internal Server Error.`);
-                    }
-                    console.log('File served successfully!');
-                });
-            } else {
-                res.setHeader('WWW-Authenticate', 'Basic realm="Secure File Access"');
-                res.status(401).send('Unauthorized');
-            }
-
-        } else {
-            res.status(415).send('Unsupported Media type');
+        const name = row.name;
+        const email = row.email;
+        const responseObject = {
+            name,
+            email
         }
+
+        return res.status(200).send(responseObject);
+        
     });
 
 })
-*/
+
 app.listen(config.default.PORT, () => console.log("Server running!"));

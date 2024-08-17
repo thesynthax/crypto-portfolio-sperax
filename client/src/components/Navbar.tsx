@@ -6,6 +6,7 @@ import { useState, useEffect, useRef } from "react";
 import DropDown from "./DropDown";
 
 type NavbarProps = {
+  account: string;
   walletConnected: boolean;
   setWalletConnected: Function;
   setAccount: Function;
@@ -49,7 +50,7 @@ const Navbar = (props: NavbarProps) => {
         </div>
       </nav>
       {
-        openDropDown && <DropDown connected={props.walletConnected} setConnected={props.setWalletConnected} setAccount={props.setAccount} />
+        openDropDown && <DropDown account={props.account} connected={props.walletConnected} setConnected={props.setWalletConnected} setAccount={props.setAccount} />
       }
     </>
   )
