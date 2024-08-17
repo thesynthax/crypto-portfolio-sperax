@@ -33,8 +33,7 @@ const Navbar = (props: NavbarProps) => {
         <div className="links">
           {props.walletConnected ? 
             <>
-              <Link to="/">Portfolio</Link>
-              <Link to="/watch-list">Watch List</Link>
+              <Link to="/">Watch List</Link>
               <Link to="/transaction-history">Transaction History</Link>
               <Link to="/transfer-tokens">Transfer Tokens</Link>
             </>

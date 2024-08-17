@@ -46,7 +46,7 @@ app.get("/", (req, res) => {
     res.sendFile(path.join(BUILD, "index.html"));
 })
 
-app.post("/profile", async (req, res) => {
+app.post("/api/v1/profile", async (req, res) => {
     
     const getQry = `SELECT walletAddress FROM users where walletAddress = ?`;
     const getValue = req.body[2];
@@ -81,7 +81,7 @@ app.post("/profile", async (req, res) => {
 
 });
 
-app.get('/profile/:id', async (req, res) => {
+app.get('/api/v1/profile/:id', async (req, res) => {
     const walletAddress = req.params.id;
 
     const qry = `SELECT * FROM users WHERE walletAddress = ?`;

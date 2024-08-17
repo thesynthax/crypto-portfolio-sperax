@@ -11,15 +11,29 @@ import { NotFound } from './components/NotFound';
 
 const App = () => {
 
-  const [account, setAccount] = useState<string>("");
-  const [walletConnected, setWalletConnected] = useState<boolean>(false);
+  //const [account, setAccount] = useState<string>("");
+  const [account, setAccount] = useState<string>(() => {
+    const saved = localStorage.getItem('account');
+    return saved ? JSON.parse(saved) : "";
+  });
+  //const [walletConnected, setWalletConnected] = useState<boolean>(false);
+  const [walletConnected, setWalletConnected] = useState<boolean>(() => {
+    const saved = localStorage.getItem('walletConnected');
+    return saved ? JSON.parse(saved) : false;
+  });
 
   const HandleWalletState = (value: boolean) => {
     setWalletConnected(value);
+    localStorage.setItem('walletConnected', JSON.stringify(value));
   }
   const HandleAccountState = (value: string) => {
     setAccount(value);
+    localStorage.setItem('account', JSON.stringify(value));
   }
+
+  useEffect(() => {
+    
+  }, []);
 
   const profilePath = `/profile/${account}`;
 
@@ -28,8 +42,7 @@ const App = () => {
       <div className="App">
         <Navbar account={account} walletConnected={walletConnected} setWalletConnected={HandleWalletState} setAccount={HandleAccountState}/>
           <Routes>
-            <Route path="/" element={<Home walletConnected={walletConnected}/>} />
-            <Route path="/watch-list" element={<WatchList />} />
+            <Route path="/" element={<Home account={account} walletConnected={walletConnected}/>} />
             <Route path="/transaction-history" element={<TransactionHistory />} />
             <Route path="/transfer-tokens" element={<TransferTokens />} />
             {

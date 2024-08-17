@@ -48,8 +48,8 @@ export const ConnectWallet = (props: ConnectWalletProps) => {
 
         await provider.send("eth_requestAccounts", []);
         
-        const signer = provider.getSigner();
-        const accountAddress = (await signer).getAddress();
+        const signer = await provider.getSigner();
+        const accountAddress = signer.getAddress();
         setAccount(await accountAddress);
 
         props.HandleWalletState(true);

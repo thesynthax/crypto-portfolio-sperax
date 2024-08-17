@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "./Button";
 import { Textbox } from "./Textbox"
 import { TextboxLabel } from "./TextboxLabel";
@@ -15,6 +16,10 @@ export const Profile = (props : ProfileProps) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
 
+  const [buttonLabel, setButtonLabel] = useState("");
+
+  const navigate = useNavigate();
+
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value)
   }
@@ -26,22 +31,24 @@ export const Profile = (props : ProfileProps) => {
     e.preventDefault();
 
     const data = [name, email, props.accountAddress]
-    fetch('/profile', {
+    fetch('/api/v1/profile', {
       method: 'POST',
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data)
     }).then((res) => {
-      console.log(res);
+      setButtonLabel("Changes saved");
+      setTimeout(() => {navigate('/')}, 100);
     });
   }
 
 
   const getProfileInfo = async () => {
-    const res = await (await fetch(`/profile/${props.accountAddress}`, {
+    const res = await (await fetch(`/api/v1/profile/${props.accountAddress}`, {
         method: 'GET',
       })).json();
     setNamePlaceholder(res.name);
     setEmailPlaceholder(res.email);
+    setButtonLabel("Save changes");
   }
 
   useEffect(() => {
@@ -58,7 +65,7 @@ export const Profile = (props : ProfileProps) => {
         <Textbox handleChange={handleEmailChange} placeholder={emailPlaceholder != null ? emailPlaceholder : "Enter your email address"} canEdit={true}/> 
         <TextboxLabel label={"Wallet Address (cannot be edited)"} />
         <Textbox placeholder="" canEdit={false} value={props.accountAddress}/>
-        <Button label={"Save changes"} />
+        <Button label={buttonLabel} />
       </form>
     </div>
   )

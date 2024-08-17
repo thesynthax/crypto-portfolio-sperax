@@ -11,7 +11,7 @@ type TextboxProps = {
 export const Textbox = (props: TextboxProps) => {
   return (
     <div className="px-4 py-3">
-      <label className="flex flex-col min-w-40 h-12 w-full">
+      <label className="flex flex-col min-w-80 h-12 w-full">
         <div className="flex w-full flex-1 items-stretch rounded-lg h-full">
           <div className="text-[#D5D6DD] flex border-none bg-[#3C3F4A] items-center justify-center pl-4 rounded-l-lg border-r-0">
           </div>
