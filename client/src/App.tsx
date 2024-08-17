@@ -30,9 +30,11 @@ const App = () => {
             <Route path="/watch-list" element={<WatchList />} />
             <Route path="/transaction-history" element={<TransactionHistory />} />
             <Route path="/transfer-tokens" element={<TransferTokens />} />
-            <Route path="/profile" element={<Profile accountAddress={account}/>} />
             {
-              !walletConnected && <Route path="/connect-wallet" element={<ConnectWallet HandleWalletState={HandleWalletState} HandleAccountState={HandleAccountState}/>} />
+              !walletConnected ?
+                <Route path="/connect-wallet" element={<ConnectWallet HandleWalletState={HandleWalletState} HandleAccountState={HandleAccountState}/>} />
+                :
+                <Route path="/profile" element={<Profile accountAddress={account}/>} />
             }
             <Route path="*" element={<NotFound />} />
           </Routes>
