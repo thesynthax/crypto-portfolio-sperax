@@ -31,10 +31,6 @@ const App = () => {
     localStorage.setItem('account', JSON.stringify(value));
   }
 
-  useEffect(() => {
-    
-  }, []);
-
   const profilePath = `/profile/${account}`;
 
   return (

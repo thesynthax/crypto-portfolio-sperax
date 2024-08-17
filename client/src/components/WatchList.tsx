@@ -10,6 +10,10 @@ interface Balances {
   [key: string]: string; 
 }
 
+interface TokenNames {
+  [key: string]: string
+}
+
 type WatchListProps = {
   account: string;
 }
@@ -21,6 +25,29 @@ export const WatchList = (props: WatchListProps) => {
   });
   const [tokenInput, setTokenInput] = useState<string>('');
   const [balances, setBalances] = useState<Balances>({});
+
+  const [tokenName, setTokenName] = useState<string | null>(null);
+  const [tokenNames, setTokenNames] = useState<TokenNames>({});
+
+  // Function to fetch the name of the token
+  const fetchTokenName = async (token: string) => {
+    try {
+      const provider = new ethers.BrowserProvider(window.ethereum);
+      const contract = new ethers.Contract(token, [
+        "function name() view returns (string)"
+      ], provider);
+
+      const name = await contract.name();
+      //setTokenName(name);
+      setTokenNames(prev => ({
+        ...prev,
+        [token]: name
+      }));
+    } catch (error) {
+      console.error("Failed to fetch token name:", error);
+      //setTokenNames(null);
+    }
+  };
 
   // Function to add a token to the watch list
   const addTokenToWatchList = () => {
@@ -65,6 +92,7 @@ export const WatchList = (props: WatchListProps) => {
   // Fetch the balance for each token in the watch list
   useEffect(() => {
     watchList.forEach(token => fetchTokenBalance(token));
+    watchList.forEach(token => fetchTokenName(token))
   }, [watchList]);
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -86,8 +114,7 @@ export const WatchList = (props: WatchListProps) => {
       <ul>
         {watchList.map((token, index) => (
           <li key={index}>
-            <WatchListToken tokenName={token} balance={balances[token] ? `${balances[token]} tokens` : "Fetching balance..."}/>
-            <button onClick={() => removeTokenFromWatchList(token)}>Remove</button>
+            <WatchListToken tokenAddress={token} removeToken={() => removeTokenFromWatchList(token)} tokenName={tokenNames[token]} balance={balances[token] ? `${balances[token]} tokens` : "Fetching balance..."}/>
           </li>
         ))}
       </ul>
