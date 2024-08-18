@@ -18,11 +18,12 @@ const Navbar = (props: NavbarProps) => {
   const excludedElementRef = useRef<HTMLDivElement>(null);
   const connectWalletButtonRef = useRef<HTMLDivElement>(null);
 
-  const { hash, pathname, search } = useLocation();
+  const { pathname } = useLocation();
 
   if (!props.walletConnected && connectWalletButtonRef.current)
     connectWalletButtonRef.current.className = pathname === "/connect-wallet" ? "userCircle highlighted" : "userCircle";
 
+  // for closing the drop down by clicking any where on the page
   const handleClickOutside = (event: MouseEvent) => {
     if (excludedElementRef.current && !excludedElementRef.current.contains(event.target as Node)) {
       setOpenDropDown(false);

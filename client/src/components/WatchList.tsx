@@ -15,15 +15,13 @@ interface TokenNames {
   [key: string]: string
 }
 
-type WatchListProps = {
-  account: string;
-}
-
 type Token = {
   name: string;
   balance: number;
 }
 
+// For visualization purposes, if the connected wallet has zero balance in all the tokens
+// Just change data to sampleData <TokenChart />
 const sampleData: Token[] = [
   { name: 'Ethereum', balance: 2 },
   { name: 'Bitcoin', balance: 1 },
@@ -34,7 +32,7 @@ const sampleData: Token[] = [
   { name: 'Pied', balance: 5 },
 ]
 
-export const WatchList = (props: WatchListProps) => {
+export const WatchList = () => {
   const [watchList, setWatchList] = useState<string[]>(() => {
     const saved = localStorage.getItem('watchList');
     return saved ? JSON.parse(saved) : [];
@@ -42,12 +40,8 @@ export const WatchList = (props: WatchListProps) => {
   const [tokenInput, setTokenInput] = useState<string>('');
   const [balances, setBalances] = useState<Balances>({});
 
-  const [tokenName, setTokenName] = useState<string | null>(null);
   const [tokenNames, setTokenNames] = useState<TokenNames>({});
 
-
-
-  // Function to fetch the name of the token
   const fetchTokenName = async (token: string) => {
     try {
       const provider = new ethers.BrowserProvider(window.ethereum);
@@ -56,18 +50,15 @@ export const WatchList = (props: WatchListProps) => {
       ], provider);
 
       const name = await contract.name();
-      //setTokenName(name);
       setTokenNames(prev => ({
         ...prev,
         [token]: name
       }));
     } catch (error) {
       console.error("Failed to fetch token name:", error);
-      //setTokenNames(null);
     }
   };
 
-  // Function to add a token to the watch list
   const addTokenToWatchList = () => {
     if (tokenInput && !watchList.includes(tokenInput)) {
       const updatedWatchList = [...watchList, tokenInput];
@@ -77,7 +68,6 @@ export const WatchList = (props: WatchListProps) => {
     }
   };
 
-  // Function to remove a token from the watch list
   const removeTokenFromWatchList = (token: string) => {
     const updatedWatchList = watchList.filter(item => item !== token);
     setWatchList(updatedWatchList);

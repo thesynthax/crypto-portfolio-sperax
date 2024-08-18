@@ -4,13 +4,12 @@ import { Button } from './Button';
 import { Textbox } from './Textbox';
 import { TextboxLabel } from './TextboxLabel';
 
-export async function transferToken(
+const transferToken = async (
   tokenAddress: string,
   recipientAddress: string,
   amount: string,
-  provider: ethers.Provider,
   signer: ethers.Signer
-): Promise<void> {
+): Promise<void> => {
   const abi = [
     'function transfer(address recipient, uint256 amount) public returns (bool)',
   ];
@@ -27,6 +26,7 @@ export async function transferToken(
   }
 }
 
+// Fetching from the provider to transfer tokens to a recipient
 export const TransferTokens = () => {
   const [tokenAddress, setTokenAddress] = useState<string>('');
   const [recipientAddress, setRecipientAddress] = useState<string>('');
@@ -52,7 +52,7 @@ export const TransferTokens = () => {
     }
 
     try {
-      await transferToken(tokenAddress, recipientAddress, amount, provider, signer);
+      await transferToken(tokenAddress, recipientAddress, amount, signer);
       alert('Transfer successful!');
     } catch (error) {
       alert('Transfer failed');

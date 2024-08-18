@@ -1,17 +1,17 @@
 import { Link } from "react-router-dom";
 import { WatchList } from "./WatchList";
 
-type homepageProps = {
+type HomeProps = {
   account: string;
   walletConnected: boolean;
 }
 
-const Home = (props: homepageProps) => {
+const Home = (props: HomeProps) => {
   const walletConnected = props.walletConnected; 
   return (
     <>
       {walletConnected ?
-        <WatchList account={props.account} />
+        <WatchList />
         :
         <div className="container">
             <h2 className="line1"><span className="a1">W</span><span className="a2">ELCOME</span> <span className="a1">T</span><span className="a2">O</span></h2>

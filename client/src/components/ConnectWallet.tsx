@@ -40,6 +40,8 @@ export const ConnectWallet = (props: ConnectWalletProps) => {
   const [provider, setProvider] = useState<ethers.BrowserProvider | null>(null);
   const navigate = useNavigate();
   const { hash, pathname, search } = useLocation();
+
+  // Connecting to the metamask wallet through ethers provider
   const connectWallet = async () => {
     if (window.ethereum) { 
       try {
@@ -50,6 +52,8 @@ export const ConnectWallet = (props: ConnectWalletProps) => {
         
         const signer = await provider.getSigner();
         const accountAddress = signer.getAddress();
+        
+        // setting the global walletAddress which will be passed on to almost all components
         setAccount(await accountAddress);
 
         props.HandleWalletState(true);

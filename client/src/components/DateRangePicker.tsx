@@ -2,12 +2,12 @@ import { useState } from 'react';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import { CustomDatePicker } from './CustomDatePicker';
-import { Textbox } from './Textbox';
 
 type DateRangePickerProps = {
   onChange: (startDate: Date | undefined, endDate: Date | undefined) => void;
 }
 
+// For the balance history between the startDate and endDate
 export const DateRangePicker  = (props: DateRangePickerProps) => {
   const [startDate, setStartDate] = useState<Date | undefined>();
   const [endDate, setEndDate] = useState<Date | undefined>();

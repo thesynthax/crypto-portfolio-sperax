@@ -6,6 +6,7 @@ type TextboxProps = {
   value?: string;
 }
 
+// Your basic text box designed to perfection
 export const Textbox = (props: TextboxProps) => {
   return (
     <div className="px-4 py-3">

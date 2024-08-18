@@ -7,6 +7,7 @@ type WatchListTokenProps = {
   removeToken: MouseEventHandler<HTMLButtonElement>;
 }
 
+// Each token displayed in the watchList component
 export const WatchListToken = (props : WatchListTokenProps) => {
   return (
     <div>

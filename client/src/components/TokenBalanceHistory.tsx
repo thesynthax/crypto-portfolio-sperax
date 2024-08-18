@@ -15,10 +15,6 @@ type HistoricalDataPoint = {
   date: string;
   balance: string;
 }
-type HistoricalData = {
-  tokenAddress: string;
-  dataPoints: HistoricalDataPoint[];
-}
 type EtherscanLog = {
   blockNumber: string;
   timeStamp: string;
@@ -82,7 +78,7 @@ const fetchHistoricalData = async(
   // Format the result
   const historicalData: HistoricalDataPoint[] = Object.keys(balanceMap).map((date) => ({
     date,
-    balance: ethers.formatUnits(balanceMap[date], 18), // Adjust decimals as necessary
+    balance: ethers.formatUnits(balanceMap[date], 18), 
   }));
 
   return historicalData;

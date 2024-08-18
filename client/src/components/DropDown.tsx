@@ -7,6 +7,7 @@ type DropDownProps = {
   setAccount: Function;
 }
 
+// The top-right corner drop down menu
 export const DropDown = (props: DropDownProps) => {
 
   const disconnectWallet = () => {

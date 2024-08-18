@@ -7,6 +7,7 @@ type BalanceHistoryDashboardProps = {
   walletAddress: string;
 }
 
+// Enter the token address and check its balance graph
 export const BalanceHistoryDashboard = (props : BalanceHistoryDashboardProps) => {
   const [tokenAddress, setTokenAddress] = useState("");
   const handleTokenChange = (e: React.ChangeEvent<HTMLInputElement>) => {

@@ -8,6 +8,7 @@ type ProfileProps = {
   accountAddress: string;
 }
 
+// Created my own API and database for managing the profile
 export const Profile = (props : ProfileProps) => {
 
   const [namePlaceholder, setNamePlaceholder] = useState<string | null>(null);

@@ -5,6 +5,7 @@ interface CustomInputProps {
   onClick: () => void;
 }
 
+// Only to style the not-so-good-looking default react-datepicker
 export const CustomDatePicker: React.FC<CustomInputProps> = React.forwardRef<HTMLButtonElement, CustomInputProps>(({ value, onClick }, ref) => (
   
   <div className="px-4 py-3">

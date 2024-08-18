@@ -8,6 +8,7 @@ type AllowanceCheckerProps = {
   walletAddress: string;
 }
 
+// Allowance fetcher through the ether provider
 const getAllowance = async (
   tokenAddress: string,
   ownerAddress: string,
@@ -51,6 +52,7 @@ export const AllowanceChecker = (props: AllowanceCheckerProps) => {
     }
   };
 
+  //set value on change
   const handleTokenChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTokenAddress(e.target.value)
   }

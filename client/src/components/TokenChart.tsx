@@ -11,6 +11,7 @@ type TokenChartProps = {
   data: Token[];
 }
 
+// Pie chart in the watchList (make sure there is balance in at least one token, or else the chart won't show)
 export const TokenChart = (props: TokenChartProps) => {
   const allZero = props.data.every(token => token.balance === 0);
 

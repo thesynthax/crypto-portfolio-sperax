@@ -10,6 +10,7 @@ type RadioGroupProps = {
   onChange: (value: string) => void;
 };
 
+// Present while choosing between wallets to connect
 export const RadioCarousel = (props: RadioGroupProps) => {
   return (
     <div className="shadow-3xl flex h-10 flex-1 items-center justify-center rounded-lg bg-[#3C3F4A] p-1">

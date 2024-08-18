@@ -1,7 +1,7 @@
-import { BrowserRouter as Router, Link, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Home from './components/Home';
 import Navbar from './components/Navbar';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { TransferTokens } from './components/TransferTokens';
 import { Profile } from './components/Profile';
 import { ConnectWallet } from './components/ConnectWallet';
@@ -11,12 +11,10 @@ import { BalanceHistoryDashboard } from './components/BalanceHistoryDashboard';
 
 const App = () => {
 
-  //const [account, setAccount] = useState<string>("");
   const [account, setAccount] = useState<string>(() => {
-    const saved = localStorage.getItem('account');
+    const saved = localStorage.getItem('account'); // localStorage for saving the account in cookies
     return saved ? JSON.parse(saved) : "";
   });
-  //const [walletConnected, setWalletConnected] = useState<boolean>(false);
   const [walletConnected, setWalletConnected] = useState<boolean>(() => {
     const saved = localStorage.getItem('walletConnected');
     return saved ? JSON.parse(saved) : false;
