@@ -2,7 +2,7 @@ import { Link, useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGem, faUser as farUser } from '@fortawesome/free-regular-svg-icons';
 import { faUser as fasUser } from '@fortawesome/free-solid-svg-icons';
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, MouseEvent } from "react";
 import DropDown from "./DropDown";
 
 type NavbarProps = {
@@ -23,6 +23,22 @@ const Navbar = (props: NavbarProps) => {
   if (!props.walletConnected && connectWalletButtonRef.current)
     connectWalletButtonRef.current.className = pathname === "/connect-wallet" ? "userCircle highlighted" : "userCircle";
 
+  const handleClickOutside = (event: MouseEvent) => {
+    if (excludedElementRef.current && !excludedElementRef.current.contains(event.target as Node)) {
+      setOpenDropDown(false);
+    }
+  };
+
+  useEffect(() => {
+    const handleClick = (event: any) => handleClickOutside(event);
+    document.addEventListener('mousedown', handleClick);   
+
+    return () => {
+      document.removeEventListener('mousedown', handleClick);
+    };
+  }, []);
+
+
   return (
     <>
       <nav className="navbar">
@@ -34,14 +50,14 @@ const Navbar = (props: NavbarProps) => {
           {props.walletConnected ? 
             <>
               <Link to="/">Watch List</Link>
-              <Link to="/history">Transaction History</Link>
+              <Link to="/history">Balance History</Link>
               <Link to="/allowance">Allowance</Link>
               <Link to="/transfer-tokens">Transfer Tokens</Link>
             </>
             :
             <>
               <span>Watch List</span>
-              <span>Transaction History</span>
+              <span>Balance History</span>
               <span>Allowance</span>
               <span>Transfer Tokens</span>
             </>
@@ -50,7 +66,7 @@ const Navbar = (props: NavbarProps) => {
         </div>
       </nav>
       {
-        openDropDown && <DropDown account={props.account} connected={props.walletConnected} setConnected={props.setWalletConnected} setAccount={props.setAccount} />
+        openDropDown && <div ref={excludedElementRef}><DropDown account={props.account} connected={props.walletConnected} setConnected={props.setWalletConnected} setAccount={props.setAccount} /></div>
       }
     </>
   )

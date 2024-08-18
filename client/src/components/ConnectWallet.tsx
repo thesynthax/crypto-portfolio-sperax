@@ -59,7 +59,7 @@ export const ConnectWallet = (props: ConnectWalletProps) => {
         console.error("User rejected the request or another error occurred", error);
       }
     } else {
-      console.log("Metamask not detected. Please install Metamask.");
+      alert("Metamask not detected. Please install Metamask.");
     }
   };
 
@@ -88,7 +88,7 @@ export const ConnectWallet = (props: ConnectWalletProps) => {
           (option === "metamask") ? 
             <div>
               <div ref={metamaskLogoRef} id="metamask-logo"></div>
-              <div className="metamask-line">If you have an account on Metamask <button id="walletConnectButton"onClick={connectWallet}>Connect your Metamask account</button></div>
+              <div className="metamask-line">If you have Metamask extension installed <button id="walletConnectButton"onClick={connectWallet}>Connect your Metamask account</button></div>
             </div> 
             : 
             <div>

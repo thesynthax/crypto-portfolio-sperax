@@ -36,6 +36,8 @@ a {
   margin: 0 auto;
   box-shadow: 0 20px 40px -8px #111;
   user-select: none;
+  border-bottom-right-radius: 20px;
+  border-bottom-left-radius: 20px;
 }
 .navbar .appLogo {
   margin-top: 3px;
@@ -243,7 +245,11 @@ ul {
 }
 
 #metamask-logo {
-  margin-top: 50px;
+  margin-top: 55px;
+  margin-left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 #walletConnectButton {

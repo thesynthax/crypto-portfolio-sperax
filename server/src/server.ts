@@ -5,8 +5,6 @@ import path from "path";
 import sqlite3 from "sqlite3";
 import * as config from "../config/config.json" with { type: "json" };
 import { fileURLToPath } from "url";
-import bcrypt from "bcrypt";
-import basicAuth from "basic-auth";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -74,11 +72,7 @@ app.post("/api/v1/profile", async (req, res) => {
                 console.log('Profile saved');
             });
         }
-            
     });
-/*
-    */
-
 });
 
 app.get('/api/v1/profile/:id', async (req, res) => {
@@ -104,9 +98,7 @@ app.get('/api/v1/profile/:id', async (req, res) => {
         }
 
         return res.status(200).send(responseObject);
-        
     });
-
-})
+});
 
 app.listen(config.default.PORT, () => console.log("Server running!"));

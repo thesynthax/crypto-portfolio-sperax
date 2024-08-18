@@ -25,4 +25,4 @@ yarn-error.log*
 
 proto
 
-config/secrets.json
+src/statics/secrets.json
