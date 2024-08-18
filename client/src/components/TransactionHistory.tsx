@@ -1,6 +1,6 @@
 import { ethers } from 'ethers';
 import { useState, useEffect } from 'react';
-import secrets from "../statics/secrets.json";
+import secrets from "../statics/api.json";
 
 const AVERAGE_BLOCK_TIME = 13.5;
 
