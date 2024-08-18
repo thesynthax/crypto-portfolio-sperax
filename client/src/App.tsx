@@ -2,14 +2,12 @@ import { BrowserRouter as Router, Link, Route, Routes } from 'react-router-dom';
 import Home from './components/Home';
 import Navbar from './components/Navbar';
 import { useState, useEffect } from 'react';
-import { WatchList } from './components/WatchList';
-import { TransactionHistory } from './components/TransactionHistory';
 import { TransferTokens } from './components/TransferTokens';
 import { Profile } from './components/Profile';
 import { ConnectWallet } from './components/ConnectWallet';
 import { NotFound } from './components/NotFound';
-import { HistoryDashboard } from './components/HistoryDashboard';
 import { AllowanceChecker } from './components/AllowanceChecker';
+import { BalanceHistoryDashboard } from './components/BalanceHistoryDashboard';
 
 const App = () => {
 
@@ -41,7 +39,7 @@ const App = () => {
         <Navbar account={account} walletConnected={walletConnected} setWalletConnected={HandleWalletState} setAccount={HandleAccountState}/>
           <Routes>
             <Route path="/" element={<Home account={account} walletConnected={walletConnected}/>} />
-            <Route path="/history" element={<HistoryDashboard walletAddress={account} />} /*element={<TransactionHistory walletAddress={account}/>}*/ />
+            <Route path="/history" element={<BalanceHistoryDashboard walletAddress={account}/>} /> 
             <Route path="/transfer-tokens" element={<TransferTokens />} />
             <Route path="/allowance" element={<AllowanceChecker walletAddress={account} />} />
             {

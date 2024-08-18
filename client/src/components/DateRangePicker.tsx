@@ -1,33 +1,49 @@
 import { useState } from 'react';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
+import { CustomDatePicker } from './CustomDatePicker';
+import { Textbox } from './Textbox';
 
 type DateRangePickerProps = {
-  onChange: (startDate: Date, endDate: Date) => void;
+  onChange: (startDate: Date | undefined, endDate: Date | undefined) => void;
 }
 
 export const DateRangePicker  = (props: DateRangePickerProps) => {
   const [startDate, setStartDate] = useState<Date | undefined>();
   const [endDate, setEndDate] = useState<Date | undefined>();
 
-  const handleChange = (dates: [Date | null, Date | null]) => {
-    const [start, end] = dates;
-    setStartDate(start || undefined);
-    setEndDate(end || undefined);
-    if (start && end) {
-      props.onChange(start, end);
-    }
+  const handleDateChange = () => {
+    props.onChange(startDate, endDate);
   };
 
   return (
-    <DatePicker
-      selected={startDate}
-      onChange={handleChange}
-      startDate={startDate}
-      endDate={endDate}
-      selectsRange
-      isClearable
-    />
+    <div>
+      <DatePicker
+        selected={startDate}
+        onChange={(date) => {
+          setStartDate(date || undefined);
+          handleDateChange();
+        }}
+        selectsStart
+        startDate={startDate}
+        endDate={endDate}
+        placeholderText="Start Date"
+        customInput={<CustomDatePicker value={startDate?.toLocaleDateString() || ""} onClick={() => {}} />}
+      />
+      <DatePicker
+        selected={endDate}
+        onChange={(date) => {
+          setEndDate(date || undefined);
+          handleDateChange();
+        }}
+        selectsEnd
+        startDate={startDate}
+        endDate={endDate}
+        minDate={startDate}
+        placeholderText="End Date"
+        customInput={<CustomDatePicker value={startDate?.toLocaleDateString() || ""} onClick={() => {}} />}
+      />
+    </div>
   );
 };
 /*

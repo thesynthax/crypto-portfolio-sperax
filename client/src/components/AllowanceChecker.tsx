@@ -60,14 +60,11 @@ export const AllowanceChecker = (props: AllowanceCheckerProps) => {
   return (
     <div className="content">
       <h1 className="text-[#F9FAFA] text-6xl font-bold leading-tight tracking-[-0.015em] px-4 pt-4">Check token allowance</h1>
-
-        <TextboxLabel label={"Token Address"} />
-        <Textbox handleChange={handleTokenChange} placeholder={"Enter the token's address"} canEdit={true}/> 
-        <TextboxLabel label={"Spender's Wallet"} />
-        <Textbox handleChange={handleSpenderChange} placeholder={"Enter the spender's wallet address"} canEdit={true}/> 
-        <Button onClick={checkAllowance} label={"Check Allowance"} />
-
-
+      <TextboxLabel label={"Token Address"} />
+      <Textbox handleChange={handleTokenChange} placeholder={"Enter the token's address"} canEdit={true}/> 
+      <TextboxLabel label={"Spender's Wallet"} />
+      <Textbox handleChange={handleSpenderChange} placeholder={"Enter the spender's wallet address"} canEdit={true}/> 
+      <Button onClick={checkAllowance} label={"Check Allowance"} />
       {allowance !== null && (
         <div className="m-4">
           <p>The current allowance is: {allowance} Tokens</p>
