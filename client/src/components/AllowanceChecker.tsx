@@ -1,5 +1,8 @@
 import { useEffect, useState } from 'react';
 import { ethers } from 'ethers';
+import { TextboxLabel } from './TextboxLabel';
+import { Textbox } from './Textbox';
+import { Button } from './Button';
 
 type AllowanceCheckerProps = {
   walletAddress: string;
@@ -48,29 +51,26 @@ export const AllowanceChecker = (props: AllowanceCheckerProps) => {
     }
   };
 
+  const handleTokenChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTokenAddress(e.target.value)
+  }
+  const handleSpenderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSpenderAddress(e.target.value)
+  }
   return (
-    <div>
-      <h2>Check Token Allowance</h2>
-      <div>
-        <input
-          type="text"
-          placeholder="Token Address"
-          value={tokenAddress}
-          onChange={(e) => setTokenAddress(e.target.value)}
-        />
-      </div>
-      <div>
-        <input
-          type="text"
-          placeholder="Spender Address"
-          value={spenderAddress}
-          onChange={(e) => setSpenderAddress(e.target.value)}
-        />
-      </div>
-      <button onClick={checkAllowance}>Check Allowance</button>
+    <div className="content">
+      <h1 className="text-[#F9FAFA] text-6xl font-bold leading-tight tracking-[-0.015em] px-4 pt-4">Check token allowance</h1>
+
+        <TextboxLabel label={"Token Address"} />
+        <Textbox handleChange={handleTokenChange} placeholder={"Enter the token's address"} canEdit={true}/> 
+        <TextboxLabel label={"Spender's Wallet"} />
+        <Textbox handleChange={handleSpenderChange} placeholder={"Enter the spender's wallet address"} canEdit={true}/> 
+        <Button onClick={checkAllowance} label={"Check Allowance"} />
+
+
       {allowance !== null && (
-        <div>
-          <p>Allowance: {allowance} Tokens</p>
+        <div className="m-4">
+          <p>The current allowance is: {allowance} Tokens</p>
         </div>
       )}
     </div>
