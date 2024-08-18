@@ -10,7 +10,7 @@ type WatchListTokenProps = {
 export const WatchListToken = (props : WatchListTokenProps) => {
   return (
     <div>
-      <div className="flex w-3/4 items-center m-4 gap-4 rounded-2xl bg-gray-500 px-4 min-h-[72px] py-2">
+      <div className="flex shadow-xl w-[33vw] items-center m-4 gap-4 rounded-2xl bg-gray-500 px-4 min-h-[72px] py-2">
         <div className="bg-center border bg-no-repeat aspect-square bg-cover rounded-full h-14 w-fit" ></div>
         <div className="flex flex-col justify-center">
           <p className="text-[#F9FAFA] text-base font-medium leading-normal line-clamp-1">{props.tokenName}</p>

@@ -5,6 +5,7 @@ import { TextboxLabel } from './TextboxLabel';
 import { Button } from './Button';
 import { Link } from 'react-router-dom';
 import { WatchListToken } from './WatchListToken';
+import { TokenChart } from './TokenChart';
 
 interface Balances {
   [key: string]: string; 
@@ -18,6 +19,21 @@ type WatchListProps = {
   account: string;
 }
 
+type Token = {
+  name: string;
+  balance: number;
+}
+
+const sampleData: Token[] = [
+  { name: 'Ethereum', balance: 2 },
+  { name: 'Bitcoin', balance: 1 },
+  { name: 'USDT', balance: 10 },
+  { name: 'BNB', balance: 5 },
+  { name: 'Solana', balance: 5 },
+  { name: 'DogeCoin', balance: 5 },
+  { name: 'Pied', balance: 5 },
+]
+
 export const WatchList = (props: WatchListProps) => {
   const [watchList, setWatchList] = useState<string[]>(() => {
     const saved = localStorage.getItem('watchList');
@@ -28,6 +44,8 @@ export const WatchList = (props: WatchListProps) => {
 
   const [tokenName, setTokenName] = useState<string | null>(null);
   const [tokenNames, setTokenNames] = useState<TokenNames>({});
+
+
 
   // Function to fetch the name of the token
   const fetchTokenName = async (token: string) => {
@@ -99,6 +117,13 @@ export const WatchList = (props: WatchListProps) => {
     setTokenInput(e.target.value);
   }
 
+  const data: Token[] = Object.keys(tokenNames).map((key) => {
+    return {
+      name: tokenNames[key],
+      balance: parseFloat(balances[key]),
+    };
+  });
+
   return (
     <div className="content">
       <h1 className="text-[#F9FAFA] text-6xl font-bold leading-tight tracking-[-0.015em] px-4 pt-4">Your Watchlist</h1>
@@ -111,13 +136,18 @@ export const WatchList = (props: WatchListProps) => {
         <div className="mt-5"><Button onClick={addTokenToWatchList} label={"Add Token"}/></div>
       </div>
 
-      <ul>
-        {watchList.map((token, index) => (
-          <li key={index}>
-            <WatchListToken tokenAddress={token} removeToken={() => removeTokenFromWatchList(token)} tokenName={tokenNames[token]} balance={balances[token] ? `${balances[token]} tokens` : "Fetching balance..."}/>
-          </li>
-        ))}
-      </ul>
+      <div className="flex">
+        <ul>
+          {watchList.map((token, index) => (
+            <li key={index}>
+              <WatchListToken tokenAddress={token} removeToken={() => removeTokenFromWatchList(token)} tokenName={tokenNames[token]} balance={balances[token] ? `${balances[token]} tokens` : "Fetching balance..."}/>
+            </li>
+          ))}
+        </ul>
+        <div className="ml-[100px]">
+          <TokenChart data={data} />
+        </div>
+      </div>
     </div>
   );
 };

@@ -8,6 +8,8 @@ import { TransferTokens } from './components/TransferTokens';
 import { Profile } from './components/Profile';
 import { ConnectWallet } from './components/ConnectWallet';
 import { NotFound } from './components/NotFound';
+import { HistoryDashboard } from './components/HistoryDashboard';
+import { AllowanceChecker } from './components/AllowanceChecker';
 
 const App = () => {
 
@@ -39,8 +41,9 @@ const App = () => {
         <Navbar account={account} walletConnected={walletConnected} setWalletConnected={HandleWalletState} setAccount={HandleAccountState}/>
           <Routes>
             <Route path="/" element={<Home account={account} walletConnected={walletConnected}/>} />
-            <Route path="/transaction-history" element={<TransactionHistory />} />
+            <Route path="/history" element={<HistoryDashboard walletAddress={account} />} /*element={<TransactionHistory walletAddress={account}/>}*/ />
             <Route path="/transfer-tokens" element={<TransferTokens />} />
+            <Route path="/allowance" element={<AllowanceChecker walletAddress={account} />} />
             {
               !walletConnected ?
                 <Route path="/connect-wallet" element={<ConnectWallet HandleWalletState={HandleWalletState} HandleAccountState={HandleAccountState}/>} />

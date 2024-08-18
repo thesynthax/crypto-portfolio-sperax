@@ -34,14 +34,15 @@ const Navbar = (props: NavbarProps) => {
           {props.walletConnected ? 
             <>
               <Link to="/">Watch List</Link>
-              <Link to="/transaction-history">Transaction History</Link>
+              <Link to="/history">Transaction History</Link>
+              <Link to="/allowance">Allowance</Link>
               <Link to="/transfer-tokens">Transfer Tokens</Link>
             </>
             :
             <>
-              <span>Portfolio</span>
               <span>Watch List</span>
               <span>Transaction History</span>
+              <span>Allowance</span>
               <span>Transfer Tokens</span>
             </>
           }
