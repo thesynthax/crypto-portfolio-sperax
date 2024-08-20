@@ -31,7 +31,7 @@ The link to the deployed Docker instance is https://cryptolio.thesynthax.xyz
 ## Hosting and Deploying your own instance
 ### Docker
 1) Type `docker pull thesynthax/cryptolio:1.0` in command line.
-2) Now run `docker run -d -p 5000:5000 thesynthax/cryptolio:1.0` to run the server.
+2) Now run `docker run -d -p 5000:5000 -e ETHERSCAN_API_KEY=<etherscan_key> -e INFURA_API_KEY=<infura_key> thesynthax/cryptolio:1.0` to run the server.
 ### OR
 ### Building from source
 1) Clone this repository using `git clone https://github.com/thesynthax/cryptolio.git`
@@ -40,7 +40,8 @@ The link to the deployed Docker instance is https://cryptolio.thesynthax.xyz
 4) `cp -r build ../server/`.
 5) Set your API Key in `client/src/static/api.json`
 6) Go to `cryptolio/server` and run `npm run build`.
-7) Now run `npm run start` to run the production server.
+7) Add the `ETHERSCAN_API_KEY` and `INFURA_API_KEY` to .env.
+8) Now run `npm run start` to run the production server.
 
 ## Setting up the codebase
 
