@@ -1,0 +1,14 @@
+services:
+  app:
+    image: thesynthax/cryptolio:1.0
+    ports:
+      - "5000:5000" 
+    environment:
+      - NODE_ENV=production
+      - INFURA_API_KEY=${INFURA_API_KEY} 
+      - ETHERSCAN_API_KEY=${ETHERSCAN_API_KEY} 
+    volumes:
+      - .:/app  
+
+volumes:
+  node_modules:
