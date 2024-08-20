@@ -1,16 +1,23 @@
-import express from "express";
+import express, { Request, Response } from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
 import path from "path";
 import sqlite3 from "sqlite3";
 import * as config from "../config/config.json" with { type: "json" };
 import { fileURLToPath } from "url";
+import axios from 'axios';
+import dotenv from 'dotenv';
+import { ethers } from 'ethers';
+
+dotenv.config();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
 app.use(cors());
+
+const AVERAGE_BLOCK_TIME = 13.5;
 
 const BUILD: string = path.join(__dirname, "..", "build");
 
@@ -82,7 +89,7 @@ app.get('/api/v1/profile/:id', async (req, res) => {
     const values = [walletAddress];
     db.get(qry, values, async (err, row: Row | undefined) => {
         if (err) {
-            console.error('Error fetching file data:', err);
+            console.error('Error fetching user data:', err);
             return res.status(500).send(`Internal Server Error.`);
         }
 
@@ -99,6 +106,64 @@ app.get('/api/v1/profile/:id', async (req, res) => {
 
         return res.status(200).send(responseObject);
     });
+});
+
+export const getBlockNumberByDate = async (date: Date): Promise<number> => {
+  try {
+    const infuraApiKey = process.env.INFURA_API_KEY;
+    if (!infuraApiKey) throw new Error("Infura API key is missing");
+    const provider = new ethers.JsonRpcProvider(`https://mainnet.infura.io/v3/${infuraApiKey}`);
+
+    const latestBlock = await provider.getBlock('latest');
+    const latestBlockNumber = latestBlock?.number;
+    const latestBlockTimestamp = latestBlock?.timestamp;
+
+    const targetTimestamp = Math.floor(date.getTime() / 1000);
+    const timeDifference = latestBlockTimestamp! - targetTimestamp;
+    const estimatedBlocks = Math.floor(timeDifference / AVERAGE_BLOCK_TIME);
+
+    const estimatedBlockNumber = latestBlockNumber! - estimatedBlocks;
+
+    return estimatedBlockNumber;
+  } catch (error) {
+    return 0;
+  }
+};
+
+interface HistoricalBalanceQuery {
+  walletAddress: string;
+  tokenAddress: string;
+  startDate: string;
+  endDate: string;
+}
+
+// Endpoint to get historical data
+app.get('/api/v1/balance', async (req: Request<{}, {}, {}, HistoricalBalanceQuery>, res: Response) => {
+  const { walletAddress, tokenAddress, startDate, endDate } = req.query;
+  const startBlock = await getBlockNumberByDate(new Date(startDate));
+  const endBlock = await getBlockNumberByDate(new Date(endDate));
+
+  try {
+    const etherscanApiKey = process.env.ETHERSCAN_API_KEY;
+    if (!etherscanApiKey) throw new Error("Etherscan API key is missing");
+    const response = await axios.get('https://api.etherscan.io/api', {
+      params: {
+        module: 'account',
+        action: 'tokentx',
+        contractaddress: tokenAddress,
+        address: walletAddress,
+        startblock: startBlock,
+        endblock: endBlock,
+        sort: 'asc',
+        apikey: etherscanApiKey,
+      },
+    });
+    res.json(response.data);
+
+  } catch (error) {
+    console.error('Error fetching data from Etherscan:', error);
+    res.status(500).json({ error: 'Failed to fetch data' });
+  }
 });
 
 app.listen(config.default.PORT, () => console.log("Server running!"));

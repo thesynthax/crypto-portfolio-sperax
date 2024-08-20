@@ -2,10 +2,9 @@ import { ethers, BigNumberish } from 'ethers';
 import { useState } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { DateRangePicker } from './DateRangePicker';
-import secrets from '../statics/api.json';
 import axios from 'axios';
 
-const etherscanApiKey = secrets.ETHERSCAN_API_KEY;
+//const etherscanApiKey = process.env.REACT_APP_ETHERSCAN_API_KEY;
 
 type TokenHistoryProps = {
   tokenAddress: string;
@@ -36,8 +35,7 @@ const fetchHistoricalData = async(
   const startTimestamp = new Date(startDate).getTime() / 1000;
   const endTimestamp = new Date(endDate).getTime() / 1000;
 
-  // Fetch token transfer events from Etherscan
-  const response = await axios.get(`https://api.etherscan.io/api`, {
+  /*const response = await axios.get(`https://api.etherscan.io/api`, {
     params: {
       module: 'account',
       action: 'tokentx',
@@ -48,40 +46,55 @@ const fetchHistoricalData = async(
       sort: 'asc',
       apikey: etherscanApiKey,
     },
-  });
+  });*/
 
-  const logs: EtherscanLog[] = response.data.result;
+  try {
+    // Fetch token transfer events from Etherscan
+    const response = await axios.get('/api/v1/balance', {
+      params: {
+        walletAddress,
+        tokenAddress,
+        startDate,
+        endDate,
+      },
+    });
+    const logs: EtherscanLog[] = response.data.result;
 
-  // Filter events within the date range
-  const filteredLogs = logs.filter((log) => {
-    const logTimestamp = parseInt(log.timeStamp, 10);
-    return logTimestamp >= startTimestamp && logTimestamp <= endTimestamp;
-  });
+    // Filter events within the date range
+    const filteredLogs = logs.filter((log) => {
+      const logTimestamp = parseInt(log.timeStamp, 10);
+      return logTimestamp >= startTimestamp && logTimestamp <= endTimestamp;
+    });
 
-  // Calculate balances at each day
-  const balanceMap: { [date: string]: BigNumberish } = {};
-  let currentBalance = BigInt(0);
+    // Calculate balances at each day
+    const balanceMap: { [date: string]: BigNumberish } = {};
+    let currentBalance = BigInt(0);
 
-  filteredLogs.forEach((log) => {
-    const logDate = new Date(parseInt(log.timeStamp, 10) * 1000).toISOString().split('T')[0];
-    const logValue = BigInt(log.value);
+    filteredLogs.forEach((log) => {
+      const logDate = new Date(parseInt(log.timeStamp, 10) * 1000).toISOString().split('T')[0];
+      const logValue = BigInt(log.value);
 
-    if (log.to.toLowerCase() === walletAddress.toLowerCase()) {
-      currentBalance += logValue;
-    } else if (log.from.toLowerCase() === walletAddress.toLowerCase()) {
-      currentBalance -= logValue;
-    }
+      if (log.to.toLowerCase() === walletAddress.toLowerCase()) {
+        currentBalance += logValue;
+      } else if (log.from.toLowerCase() === walletAddress.toLowerCase()) {
+        currentBalance -= logValue;
+      }
 
-    balanceMap[logDate] = currentBalance;
-  });
+      balanceMap[logDate] = currentBalance;
+    });
 
-  // Format the result
-  const historicalData: HistoricalDataPoint[] = Object.keys(balanceMap).map((date) => ({
-    date,
-    balance: ethers.formatUnits(balanceMap[date], 18), 
-  }));
+    // Format the result
+    const historicalData: HistoricalDataPoint[] = Object.keys(balanceMap).map((date) => ({
+      date,
+      balance: ethers.formatUnits(balanceMap[date], 18), 
+    }));
 
-  return historicalData;
+    return historicalData;
+
+  } catch (error) {
+    console.error('Error fetching historical data:', error);
+    return [];
+  }
 }
 
 export const TokenBalanceHistory = (props: TokenHistoryProps) => {
